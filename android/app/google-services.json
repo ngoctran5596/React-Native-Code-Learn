@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "571534316374",
+    "project_id": "code-learn-9b487",
+    "storage_bucket": "code-learn-9b487.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571534316374:android:2b50a45eae087c795afcf7",
+        "android_client_info": {
+          "package_name": "com.roommanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "571534316374-7btf979cs5ajvhg3kvioqma6u9fc9n1b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBc-NNd2wMxtPw37zO0CYg_Q4McnCD9yZI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "571534316374-7btf979cs5ajvhg3kvioqma6u9fc9n1b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
