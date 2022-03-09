@@ -10,7 +10,7 @@ interface Props {
     containerStyle?: StyleProp<ViewStyle>,
     name?: string,
     clock?: string,
-    thumbnail: ImageSourcePropType,
+    thumbnail?: any,
     onPress?: () => void,
 }
 const VerticalCategoriesCard: React.FC<Props> = ({ containerStyle, onPress, clock, name, thumbnail }) => {

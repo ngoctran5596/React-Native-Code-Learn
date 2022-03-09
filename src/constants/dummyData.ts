@@ -297,6 +297,66 @@ export const course_details = {
     ]
 }
 
+export const class_type = [
+    {
+        id: 0,
+        title: "All",
+        image: require('../assets/images/open-book.png'),
+    },
+    {
+        id: 1,
+        title: "Staff pick",
+        image: require('../assets/images/staff-picks.png'),
+    },
+    {
+        id: 2,
+        title: "Original",
+        image: require('../assets/images/books-stack-of-three.png'),
+    }
+]
+
+export const class_level = [
+    {
+        id: 0,
+        title: "Beginner",
+    },
+    {
+        id: 1,
+        title: "Intermediate",
+    },
+    {
+        id: 2,
+        title: "Advanced",
+    }
+]
+
+export const create_within = [
+    {
+        id: 0,
+        title: "All time",
+    },
+    {
+        id: 1,
+        title: "This month",
+    },
+    {
+        id: 2,
+        title: "This week",
+    },
+    {
+        id: 3,
+        title: "This day",
+    },
+    {
+        id: 4,
+        title: "2 Months",
+    },
+    {
+        id: 5,
+        title: "4 Months",
+    }
+]
+
 export const notificationByDays = [
     {
         title: "Today",

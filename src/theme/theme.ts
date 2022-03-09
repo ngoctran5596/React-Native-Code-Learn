@@ -1,5 +1,5 @@
 import { Dimensions, StyleProp, TextStyle } from "react-native";
-const { width, height } = Dimensions.get("window");
+export const { width, height } = Dimensions.get("window");
 
 export const COLORS = {
     primary: "#42C6A5",     // Green

@@ -1,14 +1,16 @@
 import { getIconComponent } from '@assets/icons';
-import { MOBILE } from '@assets/images';
-import { VerticalPopularCourseCard } from '@components';
+import { MOBILE, OPEN_BOOK, ORIGINAL, STAFF_PICK } from '@assets/images';
+import { VerticalPopularCourseCard, ClassTypeOption, ClassLevelOption, VerticalCategoriesCard } from '@components';
 import Text from '@components/Text';
 import { goBack } from '@navigation/NavigationServices';
 import { Colors } from '@theme/colors';
-import { FONTS, SIZES } from '@theme/theme';
-import { courses_list_2 } from 'constants/dummyData';
+import { COLORS, FONTS, SIZES } from '@theme/theme';
+import { class_level, class_type, courses_list_2, create_within } from 'constants/dummyData';
 import * as React from 'react';
-import { Animated, Image, TouchableOpacity, View } from 'react-native';
+import { Alert, Animated, FlatList, Image, Modal, Pressable, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import styles from './styles';
+
 
 
 
@@ -22,8 +24,13 @@ function CourseScreen(props: CourseProps) {
 
     const [isBack, setIsBack] = React.useState(false);
     const IconsSort = getIconComponent('materialIcons');
-
+    const [modalVisible, setModalVisible] = React.useState(false);
+    // const [selectedClassType, setSelectedClassType] = React.useState<number>(0);
+    const [selectedClassType, setSelectedClassType] = React.useState<number>();
+    const [selectedClassLevel, setSelectedClassLevel] = React.useState<number>();
     const course = props.route.params
+
+
 
     function _renderHeader() {
         return (
@@ -80,6 +87,108 @@ function CourseScreen(props: CourseProps) {
             )
         })
     }
+
+
+    function _renderModal() {
+        return (
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <View style={styles.modalHeader}>
+                            <Text style={styles.modalText}>Filter</Text>
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => setModalVisible(!modalVisible)}
+                            >
+                                <Text style={styles.textStyle}>Hide Modal</Text>
+                            </Pressable>
+
+                        </View>
+                        <Text style={{ ...FONTS.h3, paddingVertical: 10 }}>Class type</Text>
+                        <View style={{ height: 100, flexDirection: 'row' }}>
+                            {class_type.map((item, index) => {
+                                return (
+                                    <ClassTypeOption
+                                        key={`Class-type-${index}`}
+                                        image={item.image}
+                                        isSelected={
+                                            selectedClassType == item?.id
+                                        }
+                                        onPress={() => setSelectedClassType(item?.id)}
+                                        lable={item.title} />
+                                )
+                            })}
+                        </View>
+                        <Text style={{ ...FONTS.h3, paddingVertical: 10 }}>Class Level</Text>
+                        <View style={{ height: 150 }}>
+                            {class_level.map((item, index) => {
+                                return (
+                                    <ClassLevelOption
+                                        key={`Class-type-${index}`}
+                                        isSelected={
+                                            selectedClassLevel == item?.id
+                                        }
+                                        carcontainerStyle={item?.id == 2 ? {} : { borderBottomWidth: 0.5 }}
+                                        onPress={() => setSelectedClassLevel(item?.id)}
+                                        lable={item.title} />
+                                )
+                            })}
+                        </View>
+                        <Text style={{ ...FONTS.h3, paddingVertical: 20 }}>Created within</Text>
+                        <View style={{ flexDirection: 'row', height: 50 }}>
+                            <FlatList
+                                horizontal
+                                keyExtractor={(index: any) => index.toString()}
+                                data={create_within}
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <TouchableOpacity
+                                            key={index}
+                                            style={{
+                                                backgroundColor: COLORS.primary,
+                                                padding: SIZES.radius,
+                                                marginRight: SIZES.radius,
+                                                borderRadius: SIZES.radius
+                                            }}
+                                        >
+                                            <Text style={{textAlign:'justify', justifyContent: 'center',alignItems: 'center'}}>{item.title}</Text>
+                                        </TouchableOpacity>
+                                    )
+                                }}
+                            />
+                            {/* {
+                                create_within.map((item, index) => {
+                                    return (
+                                        <TouchableOpacity key={index}
+                                            style={{
+                                                width: '100%',
+                                                flexDirection: 'column',
+                                                paddingHorizontal: SIZES.padding,
+
+                                            }}
+
+                                        >
+                                            <VerticalCategoriesCard name={item.title} />
+                                        </TouchableOpacity>
+                                    )
+                                })
+                            } */}
+                        </View>
+
+
+                    </View>
+                </View>
+            </Modal>
+
+        )
+    }
+
+
     return (
         <View>
             {isBack && (
@@ -105,11 +214,13 @@ function CourseScreen(props: CourseProps) {
                     <Text style={{ ...FONTS.h3 }}>
                         546 result
                     </Text>
-                    <IconsSort name="sort" size={35} color={Colors.blueLight} />
+                    <IconsSort onPress={() => setModalVisible(true)} name="sort" size={35} color={Colors.blueLight} />
                 </View>
 
                 {_renderFLatlist()}
+
             </Animated.ScrollView >
+            {_renderModal()}
         </View>
     );
 }
