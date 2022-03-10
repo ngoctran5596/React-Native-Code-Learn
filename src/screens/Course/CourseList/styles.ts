@@ -41,6 +41,13 @@ const styles = StyleSheet.create({
         width:'100%',
         textAlign: 'center',
         ...FONTS.h1
+    },
+    textButton:{
+        borderRadius: SIZES.radius,
+        width: '49%',
+      
+        borderWidth: 1,
+        height: 40
     }
 
 })

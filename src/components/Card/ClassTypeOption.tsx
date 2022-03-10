@@ -25,7 +25,7 @@ const ClassTypeOption = (
     <TouchableOpacity
       style={{
         flex: 1,
-        height: 100,
+        height: 90,
         alignItems: 'center',
         padding: SIZES.radius,
         marginRight: 10,

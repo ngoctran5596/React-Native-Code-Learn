@@ -13,7 +13,7 @@ interface Props {
   carcontainerStyle?: any,
 }
 
-const ClassLevelOption = ({ isSelected, containerStyle,carcontainerStyle, lable, image, onPress }: Props) => {
+const ClassLevelOption = ({ isSelected, containerStyle, carcontainerStyle, lable, image, onPress }: Props) => {
 
 
 
@@ -21,21 +21,21 @@ const ClassLevelOption = ({ isSelected, containerStyle,carcontainerStyle, lable,
     <TouchableOpacity
       style={{
         flex: 1,
-        height: 60,
-        marginTop: 10,
-
-        
+        height: 30,
         ...containerStyle
       }}
       onPress={onPress}
 
     >
-      <View style={{ flexDirection: 'row',justifyContent:'space-between',
-        paddingVertical:5,...carcontainerStyle}}>
-        <Text style={{ color: 'black', padding: 5 }}>{lable}</Text>
+      <View style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingVertical: 5,
+        ...carcontainerStyle
+      }}>
+        <Text style={{ color: 'black' ,paddingVertical:5}}>{lable}</Text>
         <Image style={{ width: 30, height: 30 }} source={isSelected ? CHECK : UNCHECK} />
       </View>
-
     </TouchableOpacity>
   )
 }

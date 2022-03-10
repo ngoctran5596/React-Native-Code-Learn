@@ -1,6 +1,6 @@
 import { getIconComponent } from '@assets/icons';
 import { MOBILE, OPEN_BOOK, ORIGINAL, STAFF_PICK } from '@assets/images';
-import { VerticalPopularCourseCard, ClassTypeOption, ClassLevelOption, VerticalCategoriesCard } from '@components';
+import { VerticalPopularCourseCard, ClassTypeOption, ClassLevelOption, VerticalCategoriesCard, TextButton } from '@components';
 import Text from '@components/Text';
 import { goBack } from '@navigation/NavigationServices';
 import { Colors } from '@theme/colors';
@@ -28,6 +28,7 @@ function CourseScreen(props: CourseProps) {
     // const [selectedClassType, setSelectedClassType] = React.useState<number>(0);
     const [selectedClassType, setSelectedClassType] = React.useState<number>();
     const [selectedClassLevel, setSelectedClassLevel] = React.useState<number>();
+    const [selectedCreateWithin, setselectedCreateWithin] = React.useState<number>();
     const course = props.route.params
 
 
@@ -110,7 +111,7 @@ function CourseScreen(props: CourseProps) {
 
                         </View>
                         <Text style={{ ...FONTS.h3, paddingVertical: 10 }}>Class type</Text>
-                        <View style={{ height: 100, flexDirection: 'row' }}>
+                        <View style={{ height: 90, flexDirection: 'row' }}>
                             {class_type.map((item, index) => {
                                 return (
                                     <ClassTypeOption
@@ -124,8 +125,8 @@ function CourseScreen(props: CourseProps) {
                                 )
                             })}
                         </View>
-                        <Text style={{ ...FONTS.h3, paddingVertical: 10 }}>Class Level</Text>
-                        <View style={{ height: 150 }}>
+                        <Text style={{ ...FONTS.h3, paddingVertical: 5 }}>Class Level</Text>
+                        <View style={{ height: 120 }}>
                             {class_level.map((item, index) => {
                                 return (
                                     <ClassLevelOption
@@ -139,45 +140,43 @@ function CourseScreen(props: CourseProps) {
                                 )
                             })}
                         </View>
-                        <Text style={{ ...FONTS.h3, paddingVertical: 20 }}>Created within</Text>
-                        <View style={{ flexDirection: 'row', height: 50 }}>
-                            <FlatList
-                                horizontal
-                                keyExtractor={(index: any) => index.toString()}
-                                data={create_within}
-                                renderItem={({ item, index }) => {
-                                    return (
-                                        <TouchableOpacity
-                                            key={index}
-                                            style={{
-                                                backgroundColor: COLORS.primary,
-                                                padding: SIZES.radius,
-                                                marginRight: SIZES.radius,
-                                                borderRadius: SIZES.radius
-                                            }}
-                                        >
-                                            <Text style={{textAlign:'justify', justifyContent: 'center',alignItems: 'center'}}>{item.title}</Text>
-                                        </TouchableOpacity>
-                                    )
-                                }}
-                            />
-                            {/* {
-                                create_within.map((item, index) => {
-                                    return (
-                                        <TouchableOpacity key={index}
-                                            style={{
-                                                width: '100%',
-                                                flexDirection: 'column',
-                                                paddingHorizontal: SIZES.padding,
+                        <Text style={{ ...FONTS.h3, paddingVertical: 10 }}>Created within</Text>
+                        <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
+                            {create_within.map((item, index) => {
+                                return (
+                                    <TouchableOpacity
+                                        key={`Create-within-${index}`}
+                                        style={{
+                                            backgroundColor: item?.id == selectedCreateWithin ? COLORS.primary3 : COLORS.primary,
+                                            padding: SIZES.radius,
+                                            borderRadius: SIZES.radius,
+                                            marginRight: 10,
+                                            marginBottom: 10,
+                                            height: 50
+                                        }}
+                                        onPress={() => setselectedCreateWithin(item?.id)}
+                                    >
+                                        <Text style={{ textAlign: 'justify', justifyContent: 'center', alignItems: 'center' }}>{item.title}</Text>
+                                    </TouchableOpacity>
+                                )
+                            })}
 
-                                            }}
-
-                                        >
-                                            <VerticalCategoriesCard name={item.title} />
-                                        </TouchableOpacity>
-                                    )
-                                })
-                            } */}
+                        </View>
+                        <View style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                            marginTop: 50
+                        }}>
+                            <TextButton containerStyle={{
+                                ...styles.textButton,
+                                marginRight: '2%',
+                               
+                            }} label='Reset' />
+                            <TextButton containerStyle={{
+                                ...styles.textButton,
+                                marginRight: '2%',
+                                backgroundColor: COLORS.primary
+                            }} label='Save' />
                         </View>
 
 
