@@ -3,6 +3,7 @@ import { MOBILE, OPEN_BOOK, ORIGINAL, STAFF_PICK } from '@assets/images';
 import { VerticalPopularCourseCard, ClassTypeOption, ClassLevelOption, VerticalCategoriesCard, TextButton } from '@components';
 import Text from '@components/Text';
 import { goBack } from '@navigation/NavigationServices';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Colors } from '@theme/colors';
 import { COLORS, FONTS, SIZES } from '@theme/theme';
 import { class_level, class_type, courses_list_2, create_within } from 'constants/dummyData';
@@ -21,7 +22,7 @@ export interface CourseProps {
 
 function CourseScreen(props: CourseProps) {
 
-
+    const navigation:any = useNavigation();
     const [isBack, setIsBack] = React.useState(false);
     const IconsSort = getIconComponent('materialIcons');
     const [modalVisible, setModalVisible] = React.useState(false);
@@ -68,13 +69,15 @@ function CourseScreen(props: CourseProps) {
     function _renderFLatlist() {
         return courses_list_2.map((item, index) => {
             return (
-                <TouchableOpacity key={index}
+                <TouchableOpacity
+                    key={index}
                     style={{
                         width: '100%',
                         flexDirection: 'column',
                         paddingHorizontal: SIZES.padding,
 
                     }}
+                    onPress={() => navigation.navigate('CourseDetail', { selectedCourse: item })}
 
                 >
                     <VerticalPopularCourseCard
@@ -170,7 +173,7 @@ function CourseScreen(props: CourseProps) {
                             <TextButton containerStyle={{
                                 ...styles.textButton,
                                 marginRight: '2%',
-                               
+
                             }} label='Reset' />
                             <TextButton containerStyle={{
                                 ...styles.textButton,

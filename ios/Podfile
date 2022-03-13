@@ -16,6 +16,8 @@ target 'roomManagement' do
 
   pod 'RNInAppBrowser', :path => '../node_modules/react-native-inappbrowser-reborn'
 
+  pod 'react-native-video', :path => '../node_modules/react-native-video'
+
   target 'roomManagementTests' do
     inherit! :complete
     # Pods for testing

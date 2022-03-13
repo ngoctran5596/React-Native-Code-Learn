@@ -15,6 +15,16 @@ export const STAFF_PICK = require('./staff-picks.png');
 export const ORIGINAL = require('./books-stack-of-three.png');
 export const CHECK = require('./checkbox.png');
 export const UNCHECK = require('./unchecked.png');
+export const PLAY = require('./play.png');
+export const BACK = require('./back.png');
+export const SHARE = require('./share.png');
+export const FAVORITE = require('./favorite.png');
+export const LOCK = require('./padlock.png');
+export const PDF = require('./pdf.png');
+export const CHAT = require('./chat.png');
+export const HEART = require('./heart.png');
+export const REPLY = require('./reply.png');
+export const SEND = require('./send.png');
 
 
 

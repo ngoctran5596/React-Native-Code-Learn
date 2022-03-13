@@ -3,9 +3,10 @@ import React from 'react';
 import Ionicons from 'react-native-vector-icons/AntDesign'
 import { Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle, ViewProps, ImageSourcePropType } from 'react-native';
 const IconLabel = (props: any) => {
+    const {containerStyle} = props;
     return (
         <View
-            style={{ flexDirection: 'row' ,marginTop:10}}
+            style={{ flexDirection: 'row' ,marginTop:10,...containerStyle}}
         >
             <Ionicons
                name='clockcircleo'

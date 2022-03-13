@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.brentvatne.react.ReactVideoPackage;
 import com.proyecto26.inappbrowser.RNInAppBrowserPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
@@ -14,6 +15,7 @@ import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 // Reanimated Config
+
 // import com.facebook.react.bridge.JSIModulePackage; // <- add
 // import com.swmansion.reanimated.ReanimatedJSIModulePackage; // <- add
 
@@ -33,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           new AsyncStoragePackage();
+          new ReactVideoPackage();
           return packages;
         }
 

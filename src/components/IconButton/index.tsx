@@ -21,10 +21,11 @@ const IconButton = (props:any) => {
                 style={{
                     width:30,
                     height:30,
-                    tintColor:Colors.white,
+                    // tintColor:Colors.white,
                     ...props.iconStyle
                 }}
             />
+            {props.label && <Text>{props.label}</Text>}
         </TouchableOpacity>
     )
 };

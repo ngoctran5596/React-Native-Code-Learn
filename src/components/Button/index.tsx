@@ -12,7 +12,7 @@ export type Props = {
 };
 const ButtonText: React.FC<Props> = (props) => {
 
-  const { containerStyle, disabled, label, labelStyle, onPress } = props
+  const { containerStyle, disabled, label, labelStyle, onPress } = props;
   return (
     <TouchableOpacity
 

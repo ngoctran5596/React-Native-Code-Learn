@@ -329,6 +329,25 @@ export const class_level = [
         title: "Advanced",
     }
 ]
+export const course_detail_tab = [
+    {
+        id:0,
+        name:"Chapter",
+        measurelayout:undefined
+    },
+    {
+        id:1,
+        name:"Files",
+        measurelayout:undefined
+
+    },
+    {
+        id:2,
+        name:"Discussions",
+        measurelayout:undefined
+
+    }
+]
 
 export const create_within = [
     {

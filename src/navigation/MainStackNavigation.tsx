@@ -46,9 +46,17 @@ const MainStackNavigation = () => {
           headerShown: false,
         }}
       />
-       <MainStack.Screen
+      <MainStack.Screen
         name="Courses"
         component={Course.CourseList}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <MainStack.Screen
+        name="CourseDetail"
+        component={Course.CourseDetail}
         options={{
           headerShown: false,
         }}
