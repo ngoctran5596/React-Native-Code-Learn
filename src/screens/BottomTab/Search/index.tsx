@@ -107,13 +107,6 @@ const SearchScreen: React.FC<SearchScreenProps> = () => {
 
   const _renderSearchBar = () => {
 
-    // const inputRage = [0, 55]
-    // const searchBarAnimatedStyle = useAnimatedStyle(() => {
-    //   return {
-    //     height: interpolate(scrollY.value, inputRage, [55, 0], Extrapolate.CLAMP),
-    //     opacity: interpolate(scrollY.value, inputRage, [1, 0], Extrapolate.CLAMP)
-    //   }
-    // })
     return (
       <View
         style={{

@@ -42,117 +42,119 @@ const CourseDiscussion = (props: Props) => {
 
 
         return (
-            <FlatList
-                data={course_details?.discussions}
-                keyExtractor={(item) => `discussions-${item.id}`}
-                renderItem={({ item, index }) => {
-                    return (
-                        <View style={{ marginBottom: 80 }}>
-                            <ComponentSection
-                                replies={
-                                    <FlatList
-                                        data={item?.replies}
-                                        keyExtractor={item => `replies-${item.id}`}
-                                        scrollEnabled={false}
-                                        renderItem={({ item, index }) => {
-                                            return (
-                                                <ComponentSection
-                                                    commentItem={item}
-                                                    CommentOptions={
-                                                        <View
-                                                            style={{
-                                                                flexDirection: 'row',
-                                                                borderTopWidth: 1,
-                                                                borderBottomWidth: 1,
-                                                                borderColor: COLORS.gray40,
-                                                                marginTop: 5
-                                                            }}
-                                                        >
-                                                            <IconButton
-                                                                containerStyle=
-                                                                {{
-                                                                    justifyContent: 'center',
-                                                                    alignItems: 'center',
-                                                                    width: 90,
-                                                                    height: 40,
+            <View style={{marginBottom:70}}>
+                <FlatList
+                    data={course_details?.discussions}
+                    keyExtractor={(item) => `discussions-${item.id}`}
+                    renderItem={({ item, index }) => {
+                        return (
+                            <View style={{}}>
+                                <ComponentSection
+                                    replies={
+                                        <FlatList
+                                            data={item?.replies}
+                                            keyExtractor={item => `replies-${item.id}`}
+                                            scrollEnabled={false}
+                                            renderItem={({ item, index }) => {
+                                                return (
+                                                    <ComponentSection
+                                                        commentItem={item}
+                                                        CommentOptions={
+                                                            <View
+                                                                style={{
                                                                     flexDirection: 'row',
+                                                                    borderTopWidth: 1,
+                                                                    borderBottomWidth: 1,
+                                                                    borderColor: COLORS.gray40,
+                                                                    marginTop: 5
                                                                 }}
-                                                                icon={REPLY}
-                                                                iconStyle={{ width: 20, height: 20, marginRight: 3 }}
-                                                                label="Reply"
-                                                            />
-                                                            <IconButton
-                                                                containerStyle=
-                                                                {{
-                                                                    justifyContent: 'center',
-                                                                    alignItems: 'center',
-                                                                    width: 90,
-                                                                    height: 40,
-                                                                    flexDirection: 'row',
+                                                            >
+                                                                <IconButton
+                                                                    containerStyle=
+                                                                    {{
+                                                                        justifyContent: 'center',
+                                                                        alignItems: 'center',
+                                                                        width: 90,
+                                                                        height: 40,
+                                                                        flexDirection: 'row',
+                                                                    }}
+                                                                    icon={REPLY}
+                                                                    iconStyle={{ width: 20, height: 20, marginRight: 3 }}
+                                                                    label="Reply"
+                                                                />
+                                                                <IconButton
+                                                                    containerStyle=
+                                                                    {{
+                                                                        justifyContent: 'center',
+                                                                        alignItems: 'center',
+                                                                        width: 90,
+                                                                        height: 40,
+                                                                        flexDirection: 'row',
 
-                                                                }}
-                                                                icon={FAVORITE}
-                                                                iconStyle={{ width: 20, height: 20, marginRight: 3 }}
-                                                                label="like"
-                                                            />
-                                                            <Text style={{ textAlignVertical: 'center' }}>{item?.posted_on}</Text>
-                                                        </View>
-                                                    }
-                                                />
-                                            )
-                                        }}
-                                    />
-                                }
-                                CommentOptions={
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            borderTopWidth: 1,
-                                            borderBottomWidth: 1,
-                                            borderColor: COLORS.gray40,
-                                            marginTop: 5
-                                        }}
-                                    >
-                                        <IconButton
-                                            containerStyle=
-                                            {{
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                width: 100,
-                                                height: 40,
-                                                flexDirection: 'row',
-
+                                                                    }}
+                                                                    icon={FAVORITE}
+                                                                    iconStyle={{ width: 20, height: 20, marginRight: 3 }}
+                                                                    label="like"
+                                                                />
+                                                                <Text style={{ textAlignVertical: 'center' }}>{item?.posted_on}</Text>
+                                                            </View>
+                                                        }
+                                                    />
+                                                )
                                             }}
-                                            icon={CHAT}
-                                            iconStyle={{ width: 20, height: 20, marginRight: 3 }}
-                                            label={item.no_of_comments}
                                         />
-
-                                        <IconButton
-                                            containerStyle=
-                                            {{
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                width: 100,
-                                                height: 40,
+                                    }
+                                    CommentOptions={
+                                        <View
+                                            style={{
                                                 flexDirection: 'row',
-                                                marginLeft: 5
+                                                borderTopWidth: 1,
+                                                borderBottomWidth: 1,
+                                                borderColor: COLORS.gray40,
+                                                marginTop: 5
                                             }}
-                                            icon={HEART}
-                                            iconStyle={{ width: 20, height: 20, marginRight: 3 }}
-                                            label={item?.no_of_likes}
-                                        />
+                                        >
+                                            <IconButton
+                                                containerStyle=
+                                                {{
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    width: 100,
+                                                    height: 40,
+                                                    flexDirection: 'row',
 
-                                        <Text style={{ textAlignVertical: 'center' }}>{item?.posted_on}</Text>
-                                    </View>
-                                }
-                                commentItem={item}
+                                                }}
+                                                icon={CHAT}
+                                                iconStyle={{ width: 20, height: 20, marginRight: 3 }}
+                                                label={item.no_of_comments}
+                                            />
 
-                            />
-                        </View>
-                    )
-                }}
-            />
+                                            <IconButton
+                                                containerStyle=
+                                                {{
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    width: 100,
+                                                    height: 40,
+                                                    flexDirection: 'row',
+                                                    marginLeft: 5
+                                                }}
+                                                icon={HEART}
+                                                iconStyle={{ width: 20, height: 20, marginRight: 3 }}
+                                                label={item?.no_of_likes}
+                                            />
+
+                                            <Text style={{ textAlignVertical: 'center' }}>{item?.posted_on}</Text>
+                                        </View>
+                                    }
+                                    commentItem={item}
+
+                                />
+                            </View>
+                        )
+                    }}
+                />
+            </View>
         )
     }
 

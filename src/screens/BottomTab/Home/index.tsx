@@ -186,7 +186,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
       {/**content  */}
       <ScrollView
         contentContainerStyle={{
-          paddingBottom: 150
+          paddingBottom: 90
         }}
         showsVerticalScrollIndicator={false}
       >

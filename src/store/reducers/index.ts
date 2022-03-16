@@ -1,11 +1,13 @@
 import authReducer from '@store/auth/authClient';
-import {combineReducers} from 'redux';
+import courseReducer from '@store/courses/courseClient';
+import { combineReducers } from 'redux';
 import appTheme from '../theme/themeClient';
 
 
 const reducers = combineReducers({
     appTheme,
-    auth:authReducer
+    auth: authReducer,
+    courses: courseReducer
 });
 
 export type RootState = ReturnType<typeof reducers>;
