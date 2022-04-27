@@ -64,7 +64,7 @@ const ProfileProgress: React.FC<PropsProfile> = ({ icon, label, theme, value, ra
                 <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                     {label && <Text style={{ color: theme?.textColor }}>{label}</Text>}
 
-                    <Text style={{ color:theme?.textColor , ...FONTS.h2 }}>{value}</Text>
+                    <Text style={{ color:theme?.textColor , ...FONTS.h3 }}>{value}</Text>
                 </View>
             </View>
             <View style={{ justifyContent: 'flex-end', padding: 10 }}>

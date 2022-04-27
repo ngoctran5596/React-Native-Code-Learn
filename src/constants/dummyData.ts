@@ -331,20 +331,20 @@ export const class_level = [
 ]
 export const course_detail_tab = [
     {
-        id:0,
-        name:"Chapter",
-        measurelayout:undefined
+        id: 0,
+        name: "Chapter",
+        measurelayout: undefined
     },
     {
-        id:1,
-        name:"Files",
-        measurelayout:undefined
+        id: 1,
+        name: "Files",
+        measurelayout: undefined
 
     },
     {
-        id:2,
-        name:"Discussions",
-        measurelayout:undefined
+        id: 2,
+        name: "Discussions",
+        measurelayout: undefined
 
     }
 ]
@@ -373,6 +373,39 @@ export const create_within = [
     {
         id: 5,
         title: "4 Months",
+    }
+]
+
+export const students_review = [
+    {
+        id: 0,
+        avatar: require("../assets/images/student_1.png"),
+        name: "Admin",
+        created_at: "16h 47m ago",
+        message: "You just signed in from another device check inbox for more details."
+    },
+    {
+        id: 1,
+        avatar: require("../assets/images/student_2.png"),
+        name: "Customer Care",
+        created_at: "20h 02m ago",
+        message: "Your 50% discount code is: ON50DIS. Apply on checkout."
+    }
+    ,
+    {
+        id: 2,
+        avatar: require("../assets/images/student_2.png"),
+        name: "Customer Care",
+        created_at: "20h 02m ago",
+        message: "Your 50% discount code is: ON50DIS. Apply on checkout."
+    }
+    ,
+    {
+        id: 3,
+        avatar: require("../assets/images/student_2.png"),
+        name: "Customer Care",
+        created_at: "20h 02m ago",
+        message: "Your 50% discount code is: ON50DIS. Apply on checkout."
     }
 ]
 

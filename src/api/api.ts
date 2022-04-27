@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse, AxiosResponseHeaders } from '
 
 
 const axiosClient = axios.create({
-  baseURL: 'http://192.168.1.4:3000',
+  baseURL: 'http://192.168.1.183:3000',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -10,13 +10,15 @@ const axiosClient = axios.create({
   timeout: 60000,
 });
 
+
+export const urlApi = 'http://192.168.1.183:3000';
 // Add a request interceptor
 axiosClient.interceptors.request.use(function (config: AxiosRequestConfig) {
   // Do something before request is sent
   return config;
 }, function (error) {
   // Do something with request error
-  console.log('error',error)
+  console.log('error', error)
   return Promise.reject(error);
 });
 

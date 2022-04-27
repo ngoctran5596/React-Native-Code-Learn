@@ -4,12 +4,15 @@ import { VerticalPopularCourseCard, ClassTypeOption, ClassLevelOption, VerticalC
 import Text from '@components/Text';
 import { goBack } from '@navigation/NavigationServices';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { courseActions } from '@store/courses/courseClient';
 import { Colors } from '@theme/colors';
 import { COLORS, FONTS, SIZES } from '@theme/theme';
+import { useAppSelector } from 'app/hooks';
 import { class_level, class_type, courses_list_2, create_within } from 'constants/dummyData';
 import * as React from 'react';
 import { Alert, Animated, FlatList, Image, Modal, Pressable, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useDispatch } from 'react-redux';
 import styles from './styles';
 
 
@@ -21,8 +24,9 @@ export interface CourseProps {
 }
 
 function CourseScreen(props: CourseProps) {
-
-    const navigation:any = useNavigation();
+    const dispatch = useDispatch()
+    const navigation: any = useNavigation();
+    const data: any = useAppSelector((state) => state?.courses?.courses)
     const [isBack, setIsBack] = React.useState(false);
     const IconsSort = getIconComponent('materialIcons');
     const [modalVisible, setModalVisible] = React.useState(false);
@@ -30,6 +34,29 @@ function CourseScreen(props: CourseProps) {
     const [selectedClassType, setSelectedClassType] = React.useState<number>();
     const [selectedClassLevel, setSelectedClassLevel] = React.useState<number>();
     const [selectedCreateWithin, setselectedCreateWithin] = React.useState<number>();
+    const animatedValue = React.useRef(new Animated.Value(0)).current;
+    const animatedValueHeight = React.useRef(new Animated.Value(0)).current;
+
+    const searchPlaceholderAnimation = {
+        opacity: animatedValue.interpolate({
+            inputRange: [0, 40],
+            outputRange: [0, 1],
+        }),
+    };
+    const searchHeightAnimation = {
+        height: animatedValueHeight.interpolate({
+            inputRange: [0, 0],
+            outputRange: [0, 60],
+        }),
+    };
+
+    const _handleOnPress = (item: any) => {
+        navigation.navigate('CourseDetail', { selectedCourse: item });
+        dispatch(courseActions.addCourse(
+            { id: item?.id }
+        ))
+    }
+
     const course = props.route.params
 
 
@@ -48,7 +75,6 @@ function CourseScreen(props: CourseProps) {
                 }}
             >
                 <Animated.Image source={course?.image}
-                    // useNativeDriver={true}
 
                     style={{
                         width: '100%',
@@ -67,27 +93,21 @@ function CourseScreen(props: CourseProps) {
         )
     }
     function _renderFLatlist() {
-        return courses_list_2.map((item, index) => {
+        return data?.map((item: any, index: any) => {
             return (
-                <TouchableOpacity
-                    key={index}
-                    style={{
-                        width: '100%',
-                        flexDirection: 'column',
-                        paddingHorizontal: SIZES.padding,
-
-                    }}
-                    onPress={() => navigation.navigate('CourseDetail', { selectedCourse: item })}
-
+                <View
+                    key={`CourseDetail-_renderFLatlist-${index}`}
+                    style={{ paddingHorizontal: SIZES.padding }}
                 >
                     <VerticalPopularCourseCard
+                        onPress={() => _handleOnPress(item)}
                         id={index}
                         duration={item.duration}
-                        instructor={item.instructor}
+                        instructor={item.instructor?.name}
                         price={item.price}
                         ratings={item.ratings}
                         thumbnail={item.thumbnail} name={item.title} />
-                </TouchableOpacity>
+                </View>
             )
         })
     }
@@ -115,40 +135,49 @@ function CourseScreen(props: CourseProps) {
                         </View>
                         <Text style={{ ...FONTS.h3, paddingVertical: 10 }}>Class type</Text>
                         <View style={{ height: 90, flexDirection: 'row' }}>
-                            {class_type.map((item, index) => {
+                            {class_type?.map((item, index) => {
                                 return (
-                                    <ClassTypeOption
-                                        key={`Class-type-${index}`}
-                                        image={item.image}
-                                        isSelected={
-                                            selectedClassType == item?.id
-                                        }
-                                        onPress={() => setSelectedClassType(item?.id)}
-                                        lable={item.title} />
+                                    <View
+                                        key={`Class-type-class_type${item.id}`}
+
+                                    >
+                                        <ClassTypeOption
+                                            image={item.image}
+                                            isSelected={
+                                                selectedClassType == item?.id
+                                            }
+                                            onPress={() => setSelectedClassType(item?.id)}
+                                            lable={item.title} />
+                                    </View>
                                 )
                             })}
                         </View>
                         <Text style={{ ...FONTS.h3, paddingVertical: 5 }}>Class Level</Text>
                         <View style={{ height: 120 }}>
-                            {class_level.map((item, index) => {
+                            {class_level?.map((item, index) => {
                                 return (
-                                    <ClassLevelOption
-                                        key={`Class-type-${index}`}
-                                        isSelected={
-                                            selectedClassLevel == item?.id
-                                        }
-                                        carcontainerStyle={item?.id == 2 ? {} : { borderBottomWidth: 0.5 }}
-                                        onPress={() => setSelectedClassLevel(item?.id)}
-                                        lable={item.title} />
+                                    <View
+                                        key={`Class-type-level-${index}`}
+                                    >
+                                        <ClassLevelOption
+
+                                            isSelected={
+                                                selectedClassLevel == item?.id
+                                            }
+                                            carcontainerStyle={item?.id == 2 ? {} : { borderBottomWidth: 0.5 }}
+                                            onPress={() => setSelectedClassLevel(item?.id)}
+                                            lable={item.title} />
+
+                                    </View>
                                 )
                             })}
                         </View>
                         <Text style={{ ...FONTS.h3, paddingVertical: 10 }}>Created within</Text>
                         <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
-                            {create_within.map((item, index) => {
+                            {create_within?.map((item, index) => {
                                 return (
                                     <TouchableOpacity
-                                        key={`Create-within-${index}`}
+                                        key={`Create-within-${item.id}`}
                                         style={{
                                             backgroundColor: item?.id == selectedCreateWithin ? COLORS.primary3 : COLORS.primary,
                                             padding: SIZES.radius,
@@ -193,13 +222,22 @@ function CourseScreen(props: CourseProps) {
 
     return (
         <View>
-            {isBack && (
-                <View style={{ height: 50, backgroundColor: '#8dc7ad' }}>
-                    <Ionicons onPress={goBack} name='arrow-back' size={25} color='white' style={{ position: 'absolute', top: 10, left: 10 }} />
 
-                </View>)}
+            <Animated.View style={[styles.searchPlaceholder, searchPlaceholderAnimation]}>
+                <Ionicons onPress={goBack} name='arrow-back' size={25} color='white' style={{ position: 'absolute', top: 10, left: 10 }} />
+
+            </Animated.View>
             <Animated.ScrollView
-                onScroll={(e) => e.nativeEvent.contentOffset.y > 250 ? setIsBack(true) : setIsBack(false)}
+                onScroll={Animated.event(
+                    [
+                        {
+                            nativeEvent: {
+                                contentOffset: { y: animatedValue },
+                            },
+                        },
+                    ],
+                    { useNativeDriver: false },
+                )}
                 scrollEventThrottle={16}
 
             >

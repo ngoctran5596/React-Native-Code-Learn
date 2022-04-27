@@ -7,6 +7,7 @@ export {default as VerticalPopularCourseCard} from './Card/VerticalPopularCourse
 export {default as HeaderFlatList} from './Header/HeaderFlatList';
 export {default as Clock} from './IconLabel';
 export {default as TextInput} from './TextInput';
+export * from './Char';
 export * from './ProgressBar';
 export * from './Card';
 

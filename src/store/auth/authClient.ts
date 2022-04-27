@@ -3,6 +3,8 @@ import { User } from "@models";
 export interface LoginPayload {
     email?: string;
     password?: string;
+    type?:string;
+    payload?:any;
 }
 
 export interface RegisterPayload {

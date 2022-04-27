@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "571534316374",
-    "project_id": "code-learn-9b487",
-    "storage_bucket": "code-learn-9b487.appspot.com"
+    "project_number": "848851196396",
+    "project_id": "code-learning-5f46f",
+    "storage_bucket": "code-learning-5f46f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:571534316374:android:2b50a45eae087c795afcf7",
+        "mobilesdk_app_id": "1:848851196396:android:3c25191caeb1a3a8e8c8c9",
         "android_client_info": {
           "package_name": "com.roommanagement"
         }
       },
       "oauth_client": [
         {
-          "client_id": "571534316374-7btf979cs5ajvhg3kvioqma6u9fc9n1b.apps.googleusercontent.com",
+          "client_id": "848851196396-mi7e4qcggrek57vsqp501i9nrmhafsrt.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBc-NNd2wMxtPw37zO0CYg_Q4McnCD9yZI"
+          "current_key": "AIzaSyCqvvATBB5rammmOvwTw8akhCoWGQYpqOE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "571534316374-7btf979cs5ajvhg3kvioqma6u9fc9n1b.apps.googleusercontent.com",
+              "client_id": "848851196396-mi7e4qcggrek57vsqp501i9nrmhafsrt.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,5 +1,6 @@
 import { AVATAR } from '@assets/images';
 import { Line, ProfileProgressBar, ProgressBar, TextButton } from '@components';
+import { authActions } from '@store/auth/authClient';
 import { themeActions } from '@store/theme/themeClient';
 import { COLORS, darkTheme, FONTS, lightTheme, SIZES } from '@theme/theme';
 import { ThemeColors } from '@theme/types';
@@ -23,7 +24,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ toggleTheme, ...props }) 
   const appTheme = useAppSelector((state) => state.appTheme.appTheme);
   const userApp = useAppSelector((state) => state.auth.currentUser);
   function HandlerLogout() {
-    // dispatch(authActions.logout())
+    dispatch(authActions.logout())
     props?.navigation.popToTop()
 
   }

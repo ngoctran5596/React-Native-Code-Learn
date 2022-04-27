@@ -5,8 +5,9 @@ import RegisterApi from "@api/RegisterApi";
 import { Course, User } from "@models";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { PayloadAction } from "@reduxjs/toolkit";
+import { RegisterPayload } from "@store/auth/authClient";
 import axios from "axios";
-import { call, cancelled, fork, put, take } from "redux-saga/effects";
+import { call, cancelled, fork, put, take, takeEvery } from "redux-saga/effects";
 import { courseActions, CoursePayload } from "./courseClient";
 
 
@@ -19,49 +20,32 @@ export class ApiError {
     }
 }
 
-
-
-function* handlerLogin(payload: CoursePayload) {
+function* handlerAddStudent({ payload }: any) {
     try {
-        const result: Course = yield CourseApi.getAll(payload);
-        console.log('result', result)
+        const result: Course = yield CourseApi.addstudent(payload.id, payload.access_token);
+        console.log('handlerAddStudent', result)
+        yield put(courseActions.addCourseSuccess(result))
+    } catch (error: any) {
+        yield put(courseActions.addCourseFailed(error))
 
+    }
+}
+
+function* handlerCourse() {
+    try {
+        const result: Course = yield CourseApi.getAll();
+        console.log('result', result)
         yield put(courseActions.getCourseDetailSuccess(result));
 
     } catch (error: any) {
         yield put(courseActions.getCourseDetailFailed(error.message));
     }
-
-
-
 }
 
-
-// function* handlerRegister(payload: RegisterPayload) {
-//     try {
-//         console.log('handlerRegister', payload)
-
-//         const result: User = yield RegisterApi.register(payload);
-//         console.log('handlerRegister result', result)
-//         yield put(authActions.registerSuccess(result?.data));
-//     } catch (error: any) {
-//         yield put(authActions.loginFailed(error.message));
-//     }
-
-// }
-
-// function* handlerLogout() {
-//     console.log('handlerLogout')
-//     AsyncStorage.removeItem('access_tokent')
-// }
-
 function* watchCourses() {
-    //khi nhận một action có type là login thì làm việc gì đó
-    //lắng nghe một action là yield take(cái action đó) => thực hiện cái action này thì dùng fork(cái function, action.payload)
-    const action: PayloadAction<CoursePayload> = yield take(courseActions.getCourseDetail.type);
-    yield fork(handlerLogin, action.payload);
-    // yield take(authActions.logout.type);
-    // yield call(handlerLogout);
+
+    yield takeEvery(courseActions.getCourseDetail.toString(), handlerCourse);
+    yield takeEvery(courseActions.addCourse.toString(), handlerAddStudent);
 }
 
 

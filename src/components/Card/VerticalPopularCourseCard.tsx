@@ -4,42 +4,47 @@ import { SIZES, COLORS, FONTS } from '@theme/theme'
 
 import Ionicons from 'react-native-vector-icons/AntDesign';
 import IconLabel from '@components/IconLabel';
+import { Shadow } from 'react-native-shadow-2';
+import { urlApi } from '@api/api';
 
 
 interface Props {
-    containerStyle?: StyleProp<ViewStyle>,
+    containerStyle?: any,
     name?: string,
     clock?: string,
-    thumbnail: ImageSourcePropType,
+    thumbnail: any,
     price?: number,
     instructor?: string,
     duration?: string,
     id?: number,
     ratings?: number,
+    onPress?: any
 }
-const VerticalPopularCourseCard: React.FC<Props> = ({ containerStyle, price, id, instructor, duration, clock, name, ratings, thumbnail }) => {
+const VerticalPopularCourseCard: React.FC<Props> = ({ onPress, containerStyle, price, id, instructor, duration, clock, name, ratings, thumbnail }) => {
+    const thumbnail_covered = thumbnail?.replace('http://localhost:3000', urlApi)
+   
 
     return (
-        // <TouchableOpacity key={id}
-        //     style={{
-        //         width: '100%',
-        //         flexDirection: 'column',
-        //         paddingHorizontal: SIZES.padding,
-        //         ...containerStyle
-        //     }}
+        <TouchableOpacity
+            onPress={onPress}
+        >
 
-        // >
-        <>
             <View style={{ flexDirection: 'row', width: '100%' }}>
-                <Image
-                    source={thumbnail}
-                    resizeMode='cover'
-                    style={{
-                        width: "50%",
-                        height: 150,
-                        borderRadius: SIZES.padding,
-                    }}
-                />
+                <Shadow viewStyle={{
+                    width: 200,
+                    height: 150,
+                    marginBottom: SIZES.radius,
+                }}>
+                    <Image
+                        source={{ uri: thumbnail_covered }}
+                        resizeMode='cover'
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            borderRadius: SIZES.padding,
+                        }}
+                    />
+                </Shadow>
                 <View style={{ width: '60%', flexDirection: 'column', paddingHorizontal: 15, }}>
                     <Text style={{
                         ...FONTS.h4,
@@ -64,15 +69,15 @@ const VerticalPopularCourseCard: React.FC<Props> = ({ containerStyle, price, id,
 
                         <Text
                             style={{ fontSize: 18, fontWeight: 'bold', color: COLORS.black, }}>
-                            {ratings}
+                            {ratings ? ratings : 'NO'}
                         </Text>
                     </View>
                 </View>
             </View>
             <View style={{ borderBottomWidth: 1, width: '100%', marginVertical: 20, borderColor: COLORS.gray10 }}></View>
-        </>
 
-        // </TouchableOpacity>
+
+        </TouchableOpacity>
 
     );
 };

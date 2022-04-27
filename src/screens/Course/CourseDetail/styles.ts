@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     header: {
-        position: 'absolute',   
         height: SIZES.height > 800 ? 60 : 50,
         top: 0,
         left:0,

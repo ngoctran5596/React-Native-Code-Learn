@@ -5,38 +5,26 @@ import { goBack } from '@navigation/NavigationServices';
 import { COLORS, FONTS, SIZES } from '@theme/theme';
 import { course_detail_tab } from 'constants/dummyData';
 import React from 'react';
-import { Animated, ImageBackground, TouchableOpacity, View, Text, Keyboard } from 'react-native';
+import { Animated, ImageBackground, TouchableOpacity, View, Text, Keyboard, ScrollView } from 'react-native';
 import CourseChapter from './CourseTab/CourseChapter';
 import CourseDiscussion from './CourseTab/CourseDiscusstion';
 import CourseFile from './CourseTab/CourseFile';
 import styles from './styles';
+import YoutubePlayer from "react-native-youtube-iframe";
+import { useEffect, useState, useRef } from 'react';
+import { Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import VideoPlayer from 'react-native-video-player';
+import { urlApi } from '@api/api';
+import { useAppSelector } from 'app/hooks';
+import { useDispatch } from 'react-redux';
+import { videoActions } from '@store/videos/videoClient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-// interface course {
-//     id: number;
-//     title: string;
-//     duration: string;
-//     instructor: string;
-//     ratings: number;
-//     price: number;
-//     is_favourite: boolean;
-//     thumbnail: any;
-// }
-
-
-// interface Props {
-//     selectedCourse?: course,
-//     route?: any,
-// }
-
-// interface PropsI {
-//     measureLayout?: any,
-//     scrollX?: any,
-// }
 
 const course_detail_tabs = course_detail_tab.map((item) => ({ ...item, ref: React.createRef() }))
 
-const TabIndicator = ({ measureLayout, scrollX }) => {
+const TabIndicator = ({ measureLayout, scrollX, screenInfo }) => {
     const inputRange = course_detail_tabs.map((_, i) => i * SIZES.width);
 
     const tabIndicatorWidth = scrollX.interpolate({
@@ -66,7 +54,7 @@ const TabIndicator = ({ measureLayout, scrollX }) => {
         </Animated.View>
     )
 }
-const Tab = ({ scrollX, onTabPress }) => {
+const Tab = ({ scrollX, onTabPress, screenInfo }) => {
     const [measureLayout, setMeasureLayout] = React.useState([]);
     const containerRef = React.useRef();
 
@@ -94,11 +82,15 @@ const Tab = ({ scrollX, onTabPress }) => {
             ref={containerRef}
             style={{
                 flex: 1,
+                width: screenInfo.width,
                 flexDirection: 'row',
             }}
         >
-            {measureLayout?.length > 0 && <TabIndicator measureLayout={measureLayout} scrollX={scrollX} />}
-            {course_detail_tabs.map((item, index) => {
+            {
+                measureLayout?.length > 0
+                && <TabIndicator screenInfo={screenInfo} measureLayout={measureLayout} scrollX={scrollX} />
+            }
+            {course_detail_tabs?.map((item, index) => {
                 return (
                     <TouchableOpacity
                         key={`tab-${index}`}
@@ -124,20 +116,79 @@ const Tab = ({ scrollX, onTabPress }) => {
 
 const CourseDetail = (props) => {
     const { selectedCourse } = props?.route?.params;
-
+    const user = useAppSelector((state) => state.auth.currentUser);
+    const data = useAppSelector((state) => state.courses.courses);
+    const itemCourseChapter = data.find((c) => c._id === selectedCourse._id)
+    const [screenInfo, setScreenInfo] = useState(Dimensions.get('screen'));
     const [videoSelected, setVideoSelected] = React.useState(false);
-
+    const [videoPlay, setVideoPlay] = React.useState('');
+    const [tokens, setTokens] = React.useState('');
+    const [durationPlay, setDurationPlay] = React.useState('');
+    const [isPlaying, setIsPlaying] = React.useState()
+    const navigation = useNavigation();
+    const refVideo = React.useRef().current
     const flatlistRef = React.useRef();
     const scrollX = React.useRef(new Animated.Value(0)).current;
+    const thumbnail_split = selectedCourse?.thumbnail?.replace('http://localhost:3000', urlApi)
+    const dispatch = useDispatch();
+
+
+    const getToken = async () => {
+        try {
+            const value = await AsyncStorage.getItem('access_token')
+            if (value !== null) {
+
+                setTokens(JSON.parse(value));
+            }
+        } catch (e) {
+            // error reading value
+        }
+    }
+
+
+
+    React.useEffect(() => {
+
+        const onChange = (res) => {
+            setScreenInfo(res.screen);
+        };
+        getToken();
+        Dimensions.addEventListener('change', onChange);
+        return () => Dimensions.removeEventListener('change', onChange);
+    }, [])
 
     const onTabPress = React.useCallback(tabIndex => {
         flatlistRef?.current?.scrollToOffset({
             offset: tabIndex * SIZES.width
         })
     })
+
+    const onLoad = (data) => {
+        const s = data.duration / 60
+        setDurationPlay(s.toFixed(2).replace('.', ' p '));
+    };
+
+    const _handleOnPressInstructor = (item) => {
+        navigation.navigate('Instructor', { item })
+    }
+
+    const _handleOnPressPlay = (item, id) => {
+        console.log('item, id', item, id)
+        const thumbnail_split = item?.replace('http://localhost:3000', urlApi)
+        setVideoPlay(thumbnail_split);
+        setIsPlaying(id)
+        dispatch(videoActions.postComplete({
+            id,
+            access_token: tokens
+        }))
+    }
     function _renderheader() {
         return (
-            <View style={styles.header}>
+            <View style={{
+                ...styles.header,
+                position: videoSelected ? 'relative' : 'absolute',
+                backgroundColor: videoSelected ? COLORS.gray50 : null,
+            }}>
                 <View style={{ flex: 1 }}>
                     <IconButton
                         icon={BACK}
@@ -153,28 +204,43 @@ const CourseDetail = (props) => {
 
     function _renderVideoSection() {
         return (
-            <View style={styles.video}>
-                <ImageBackground
-                    source={selectedCourse?.thumbnail}
-                    style={styles.imageBG}
-                >
-                    <IconButton icon={PLAY} onPress={() => setVideoSelected(true)} iconStyle={{ width: 50, height: 50 }} />
-                </ImageBackground>
+            <>
+                {
+                    videoSelected
+                        ?
+                        (
+                            <VideoPlayer
+                                ref={refVideo}
+                                video={{ uri: videoPlay }}
+                                videoWidth={1600}
+                                videoHeight={900}
+                                thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
+                                showDuration
+                                onLoad={onLoad}
 
-            </View>
+                            />
+                        )
+                        : (
+                            <View style={styles.video}>
+                                <ImageBackground
+                                    source={{ uri: thumbnail_split }}
+                                    style={styles.imageBG}
+                                >
+                                    <IconButton icon={PLAY} onPress={() => setVideoSelected(true)} iconStyle={{ width: 50, height: 50 }} />
+                                </ImageBackground>
+                            </View>
+                        )
+                }
+            </>
+
         );
     }
 
     function renderContent() {
         return (
-            <View style={{ flex: 1 }}>
-                <View style={{ height: 60 }}>
-
-                    {/**tabIndicator */}
-                    {/**tab */}
-                    <Tab onTabPress={onTabPress} scrollX={scrollX} />
-                    {/**content */}
-
+            <View style={{ flex: 1, width: screenInfo.width }}>
+                <View style={{ height: 50, width: screenInfo.width }}>
+                    <Tab screenInfo={screenInfo} onTabPress={onTabPress} scrollX={scrollX} />
                 </View>
                 <Line />
                 <Animated.FlatList
@@ -182,7 +248,7 @@ const CourseDetail = (props) => {
                     horizontal
                     pagingEnabled
                     snapToAlignment="center"
-                    snapToInterval={SIZES.width}
+                    snapToInterval={screenInfo.width}
                     decelerationRate="fast"
                     keyboardDismissMode="on-drag"
                     showsHorizontalScrollIndicator={false}
@@ -199,13 +265,20 @@ const CourseDetail = (props) => {
                     renderItem={({ item, index }) => {
                         return (
                             <View style={{
-                                width: SIZES.width,
-
+                                width: screenInfo.width,
                             }}>
 
-                                {index === 0 && <CourseChapter />}
-                                {index === 1 && <CourseFile />}
-                                {index === 2 && <CourseDiscussion />}
+                                {index === 0 && <CourseChapter
+                                    onPressPlay={_handleOnPressPlay}
+                                    is_playing={isPlaying}
+                                    user={user}
+                                    data={data}
+                                    item={itemCourseChapter}
+                                    screenInfo={screenInfo}
+                                    _handleOnPressInstructor={() => _handleOnPressInstructor(selectedCourse)}
+                                />}
+                                {index === 1 && <CourseFile screenInfo={screenInfo} />}
+                                {index === 2 && <CourseDiscussion screenInfo={screenInfo} />}
                             </View>
                         )
                     }}

@@ -42,7 +42,7 @@ const CourseDiscussion = (props: Props) => {
 
 
         return (
-            <View style={{marginBottom:70}}>
+            <View style={{ marginBottom: 70 }}>
                 <FlatList
                     data={course_details?.discussions}
                     keyExtractor={(item) => `discussions-${item.id}`}
@@ -166,6 +166,7 @@ const CourseDiscussion = (props: Props) => {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
+                width: '100%',
                 paddingHorizontal: SIZES.padding,
                 bottom: 0,
                 left: 0,
@@ -174,7 +175,7 @@ const CourseDiscussion = (props: Props) => {
                 backgroundColor: COLORS.gray10
             }}>
                 <TextInput
-                    style={{ flex: 1 }}
+                    style={{flex: 1}}
                     multiline
                     placeholder="Type Something"
                     placeholderTextColor={COLORS.gray80}
@@ -186,15 +187,14 @@ const CourseDiscussion = (props: Props) => {
 
 
     return (
-        <View
-            style={{ flex: 1, padding: SIZES.padding }}>
-            {/**header */}
-            {_renderStudent()}
-            {/**line */}
-            {renderFooter()}
-
-
-        </View >
+        <ScrollView>
+            <View style={{margin:10}}>
+                {/**header */}
+                {_renderStudent()}
+                {/**line */}
+                {renderFooter()}
+            </View>
+        </ScrollView >
     )
 }
 

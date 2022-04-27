@@ -11,6 +11,8 @@ export type MainStackRoutes = {
   Register: undefined;
   Courses: undefined;
   CourseDetail:undefined;
+  Instructor:undefined;
+  StudentReviews:undefined;
 };
 
 export type BottomTabRoutes = {

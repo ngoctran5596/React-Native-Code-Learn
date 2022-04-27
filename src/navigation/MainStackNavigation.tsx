@@ -12,7 +12,7 @@ const MainStackNavigation = () => {
 
   return (
     <MainStack.Navigator
-      initialRouteName='BottomTab'
+      initialRouteName='Login'
       screenOptions={{
         headerShown: true,
         headerStyle: { backgroundColor: 'papayawhip' },
@@ -57,6 +57,13 @@ const MainStackNavigation = () => {
       <MainStack.Screen
         name="CourseDetail"
         component={Course.CourseDetail}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <MainStack.Screen
+        name="Instructor"
+        component={Course.InstructorProfile}
         options={{
           headerShown: false,
         }}

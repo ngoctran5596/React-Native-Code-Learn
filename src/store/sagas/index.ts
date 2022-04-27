@@ -1,5 +1,6 @@
 import authSaga from '@store/auth/authSaga';
 import courseSaga from '@store/courses/courseSaga';
+import VideoSaga from '@store/videos/videoSaga';
 import { all } from 'redux-saga/effects';
 
 
@@ -7,7 +8,8 @@ import { all } from 'redux-saga/effects';
 function* rootSaga() {
   yield all([
     authSaga(),
-    courseSaga()
+    courseSaga(),
+    VideoSaga()
   ]);
 }
 

@@ -11,9 +11,10 @@ interface Props {
   onPress?: any,
   image?: any,
   carcontainerStyle?: any,
+  id?: any,
 }
 
-const ClassLevelOption = ({ isSelected, containerStyle, carcontainerStyle, lable, image, onPress }: Props) => {
+const ClassLevelOption = ({ id,isSelected, containerStyle, carcontainerStyle, lable, image, onPress }: Props) => {
 
 
 
@@ -25,7 +26,6 @@ const ClassLevelOption = ({ isSelected, containerStyle, carcontainerStyle, lable
         ...containerStyle
       }}
       onPress={onPress}
-
     >
       <View style={{
         flexDirection: 'row',

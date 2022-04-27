@@ -4,5 +4,6 @@ export interface User{
     password: string;
     name?: string;
     image?: string;
+    accessToken: string;
     [key:string]: any;
 }

@@ -1,29 +1,54 @@
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import React from 'react';
-import { Alert, FlatList, Image, ImageBackground, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Image, ImageBackground, RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import styles from './styles'
 import { BG, BOOK } from '@assets/images';
 import { SIZES, COLORS, FONTS } from '@theme/theme';
 import { HeaderFlatList, TextButton, VerticalPopularCourseCard } from '@components';
 import { courses_list_1, categories, courses_list_2 } from '../../../constants/dummyData';
 import { VerticalCategoriesCard, VerticalCourseCard } from '@components';
-import CityApi from '../../../api/CityApi';
-import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-interface HomeScreenProps { }
+import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { courseActions } from '@store/courses/courseClient';
+
+interface HomeScreenProps {
+
+}
+
 
 const HomeScreen: React.FC<HomeScreenProps> = () => {
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = () => {
+    setRefreshing(true);
+    dispatch(courseActions.getCourseDetail())
+    setRefreshing(false);
+  };
+
+
+  
+ 
+
+  const dispatch = useAppDispatch();
+  const data: any = useAppSelector((state) => state?.courses?.courses);
 
   const navigation: any = useNavigation()
   React.useEffect(() => {
-    CityApi.getAll().then((response) => console.log(response));
-  })
+   
+ 
+    dispatch(courseActions.getCourseDetail())
+  
+  }, [])
+
+  console.log('data', data)
+
   const _renderHeader = () => {
     return (
       <View style={styles.containerIcon}>
         <View style={{ flex: 1 }}>
           <Text style={styles.ten}>Hello, everyone</Text>
-          <Text style={styles.text}>Chào mừng anh em nhé!</Text>
+          <Text style={styles.text}>Welcome  to CodeZ!</Text>
         </View>
         <Ionicons name="notifications-outline" size={32} color="black" onPress={() => Alert.alert('ok')} />
       </View>
@@ -85,21 +110,25 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
     return (
       <FlatList
         horizontal
-        data={courses_list_1}
-        listKey='Course'
-        keyExtractor={item => `Course-${item.id}`}
+        data={data}
+        keyExtractor={item => `item._id-VerticalCourseCard${item._id}`}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
           marginTop: SIZES.padding,
         }}
         renderItem={({ item, index }) => {
           return (
-            <VerticalCourseCard
-              containerStyle={{
-                marginLeft: index === 0 ? SIZES.padding : SIZES.radius,
-                marginRight: index === courses_list_1.length - 1 ? SIZES.padding : 0
-              }}
-              thumbnail={item.thumbnail} name={item.title} clock={item.duration} />)
+            <View key={`item._id-Vertical-${item?._id}`}>
+
+              <VerticalCourseCard
+                containerStyle={{
+                  marginLeft: index === 0 ? SIZES.padding : SIZES.radius,
+                  marginRight: index === courses_list_1.length - 1 ? SIZES.padding : 0
+                }}
+                thumbnail={item?.thumbnail} name={item?.title} clock={item?.duration} />
+            </View>
+
+          )
 
         }}
       />
@@ -118,7 +147,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
         renderItem={({ item, index }) => {
           return (
             <VerticalCategoriesCard
-              onPress={() => navigation.navigate('Courses',{
+              onPress={() => navigation.navigate('Courses', {
                 nameCourse: item.title,
                 image: item.thumbnail
               })}
@@ -135,47 +164,27 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
 
   const _renderPopularCourse = () => {
     return (
-      courses_list_2.map((item, index) => {
+      data?.map((item: any, index: any) => {
         return (
-          <TouchableOpacity key={index}
+          <TouchableOpacity
+            key={`item?._id_renderPopularCourse${item._id}`}
             style={{
-              width: '100%',
-              flexDirection: 'column',
               paddingHorizontal: SIZES.padding,
-
             }}
-
           >
             <VerticalPopularCourseCard
-              id={index}
-              duration={item.duration}
-              instructor={item.instructor}
-              price={item.price}
-              ratings={item.ratings}
-              thumbnail={item.thumbnail} name={item.title} />
+              duration={item?.duration}
+              instructor={item?.instructor?.name}
+              price={item?.price}
+              ratings={item?.ratings}
+              thumbnail={item?.thumbnail}
+              name={item?.title} />
           </TouchableOpacity>
+
+
         )
       })
-      // <FlatList
-      //   data={courses_list_2}
-      //   listKey='Popular Course'
-      //   keyExtractor={item => `Course-${item.id}`}
-      //   showsHorizontalScrollIndicator={false}
-      //   scrollEnabled={false}
-      //   contentContainerStyle={{
-      //     marginTop: SIZES.padding,
-      //   }}
-      //   renderItem={({ item, index }) => {
-      //     return (
-      //       <VerticalPopularCourseCard
-      //         duration={item.duration}
-      //         instructor={item.instructor}
-      //         price={item.price}
-      //         ratings={item.ratings}
-      //         thumbnail={item.thumbnail} name={item.title} />)
 
-      //   }}
-      // />
     )
   }
   return (
@@ -186,9 +195,15 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
       {/**content  */}
       <ScrollView
         contentContainerStyle={{
-          paddingBottom: 90
+          paddingBottom: 150
         }}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />}
+
       >
 
         {/* Start Learning*/}

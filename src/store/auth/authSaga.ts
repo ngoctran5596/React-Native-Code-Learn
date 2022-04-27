@@ -5,12 +5,12 @@ import { User } from "@models";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { call, cancelled, fork, put, take } from "redux-saga/effects";
+import { call, cancelled, fork, put, take, takeLatest } from "redux-saga/effects";
 import { authActions, LoginPayload, RegisterPayload } from "./authClient";
 
 
 let isCheck: any;
-AsyncStorage.getItem('access_tokent').then(value => isCheck = value);
+AsyncStorage.getItem('access_token').then(value => isCheck = value);
 
 export class ApiError {
     message: string;
@@ -23,13 +23,13 @@ export class ApiError {
 
 
 
-function* handlerLogin(payload: LoginPayload) {
+function* handlerLogin({ payload }: LoginPayload) {
     try {
-        const result:User = yield LoginApi.login(payload);
-        console.log('result', result)
-   
+        console.log('handlerLogin')
+        const result: User = yield LoginApi.login(payload);
         yield put(authActions.loginSuccess(result?.user));
-        AsyncStorage.setItem('access_tokent', 'accesstokent')
+        const jsonValue = JSON.stringify(result?.accessToken)
+        AsyncStorage.setItem('access_token', jsonValue)
     } catch (error: any) {
         yield put(authActions.loginFailed(error.message));
     }
@@ -42,7 +42,6 @@ function* handlerLogin(payload: LoginPayload) {
 function* handlerRegister(payload: RegisterPayload) {
     try {
         console.log('handlerRegister', payload)
-
         const result: User = yield RegisterApi.register(payload);
         console.log('handlerRegister result', result)
         yield put(authActions.registerSuccess(result?.data));
@@ -54,32 +53,21 @@ function* handlerRegister(payload: RegisterPayload) {
 
 function* handlerLogout() {
     console.log('handlerLogout')
-    AsyncStorage.removeItem('access_tokent')
+    AsyncStorage.removeItem('access_token')
 }
 
 function* watchLoginFlow() {
-
-    //khi nhận một action có type là login thì làm việc gì đó
-    //lắng nghe một action là yield take(cái action đó) => thực hiện cái action này thì dùng fork(cái function, action.payload)
-    while (true) {
-        const IsLoggedIn = Boolean(isCheck);
-        if (!IsLoggedIn) {
-            const action: PayloadAction<LoginPayload> = yield take(authActions.login.type);
-            yield fork(handlerLogin, action.payload);
-        }
-        yield take(authActions.logout.type);
-        yield call(handlerLogout);
-    }
-
+    yield takeLatest(authActions.login.toString(), handlerLogin);
+    yield takeLatest(authActions.logout.toString(), handlerLogout);
 }
 
 function* watchRegister() {
-
     //khi nhận một action có type là login thì làm việc gì đó
     //lắng nghe một action là yield take(cái action đó) => thực hiện cái action này thì dùng fork(cái function, action.payload)
     while (true) {
         const IsLoggedIn = Boolean(isCheck);
         if (!IsLoggedIn) {
+            console.log('handlerRegister')
             const action: PayloadAction<LoginPayload> = yield take(authActions.register.type);
             yield fork(handlerRegister, action.payload);
         }

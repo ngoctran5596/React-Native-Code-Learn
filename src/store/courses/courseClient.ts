@@ -3,6 +3,7 @@ import { Course } from "@models";
 
 export interface CoursePayload {
     _id?: string;
+    id?: string;
     videos?: any[];
     students?: any[];
     instructor?: Object;
@@ -11,6 +12,15 @@ export interface CoursePayload {
     ratings?: string;
     price?: string;
     is_favorite?: boolean;
+    access_token?: string;
+}
+export interface CoursePayload2 {
+    access_token?: string;
+
+}
+export interface CourseStudentPayload {
+    id?: string;
+    errorMessage?: string;
 }
 export interface CourseState {
     courses?: Course;
@@ -25,7 +35,7 @@ const courseSlice = createSlice({
     name: "courses",
     initialState,
     reducers: {
-        getCourseDetail(state, actions: PayloadAction<CoursePayload>) {
+        getCourseDetail(state) {
             state
         },
         getCourseDetailSuccess(state, actions: PayloadAction<Course>) {
@@ -33,13 +43,21 @@ const courseSlice = createSlice({
         },
         getCourseDetailFailed(state, actions: PayloadAction<string>) {
             state.errorMessage = actions.payload;
+        },
+        addCourse(state, actions: PayloadAction<CourseStudentPayload>) {
+            state
+        },
+        addCourseSuccess(state, actions: PayloadAction<any>) {
+            state.errorMessage = actions.payload
+        },
+        addCourseFailed(state, actions: PayloadAction<string>) {
+            state.errorMessage = actions.payload;
         }
     },
 })
 //ACTION
 export const courseActions = courseSlice.actions;
 
-console.log(initialState)
 //SELECT
 export const selectCourse = (state: any) => state.courses
 
