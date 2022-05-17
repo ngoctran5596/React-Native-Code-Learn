@@ -93,7 +93,7 @@ function Register(props: RegisterProps) {
                     >
                         <TextInput placeholder='Username' key='username' onChangeText={setName} label='User name' />
                         <TextInput placeholder='Email' key='email' onChangeText={handlerSetEmail} label='Email' />
-                        <TextInput placeholder='Password' key='Pass' onChangeText={handlerSetPassword} label='Password' />
+                        <TextInput secureTextEntry={true} placeholder='Password' key='Pass' onChangeText={handlerSetPassword} label='Password' />
                     </Block>
 
                     <Button
@@ -104,7 +104,9 @@ function Register(props: RegisterProps) {
                         onPress={handlerRegister}
                         height={50}
                         backgroundColor={COLORS.primary}
-                        title="Create Account" />
+                        title="Create Account" 
+                        margin={10}
+                        />
 
                         
                     <Button
@@ -138,6 +140,7 @@ function Register(props: RegisterProps) {
                             justify='center'
                             radius={30}
                             backgroundColor={COLORS.primary}
+                           
                             title="Google" />
                         <Button
                             padding={10}
@@ -150,12 +153,12 @@ function Register(props: RegisterProps) {
                             backgroundColor={COLORS.primary}
                             title="FaceBook" />
                     </Block>
-                    <Text
+                    {/* <Text
                         size={16}
                         padding={20}
                     >
                         New user, <Text color="primary"> Sign up now</Text>
-                    </Text>
+                    </Text> */}
                 </Block>
             </ImageBackground>
         </ScrollView>

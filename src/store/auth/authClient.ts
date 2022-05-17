@@ -13,6 +13,8 @@ export interface RegisterPayload {
     password?: string;
     isTutor?: boolean;
 }
+
+
 export interface AuthState {
     isLoggedIn?: boolean;
     logging?: boolean;

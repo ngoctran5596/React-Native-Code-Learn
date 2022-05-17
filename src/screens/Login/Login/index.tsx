@@ -77,7 +77,7 @@ function LoginScreen(props: ILoginProps) {
                     width='100%'
                 >
                     <TextInput autoComplete='email' placeholder='Email' key='email' onChangeText={handlerSetEmail} label='Email' />
-                    <TextInput placeholder='Password' key='Pass' onChangeText={handlerSetPassword} label='Password' />
+                    <TextInput  secureTextEntry={true} placeholder='Password' key='Pass' onChangeText={handlerSetPassword} label='Password' />
                 </Block>
 
 
